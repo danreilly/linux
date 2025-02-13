@@ -1,3 +1,19 @@
+# fork of AD's Linux Kernel, for Quanet
+
+Dan forked this for the quanet NIC project, when porting the AD HDL to the zcu106 board.  You can use this to compile a linux Image and the device tree for the zcu106.  Note that this is all done in the 2022_R2 branch.  The files he added were:
+
+`linux/bldu.sh'
+`linux/arch/arm64/boot/dts/xilinx/zynqmp-zcu106-fmcdaq3.dts`
+
+You can get a copy using:
+
+`  git clone -b 2022_R2 git@github.com:danreilly/linux.git`
+
+And then build using
+
+`  source ./bldu.sh`
+
+
 # Linux kernel - variant from Analog Devices, Inc.
 
 ## Table of contents
