@@ -5,7 +5,6 @@ Dan forked this for the quanet NIC project, when porting the DAQ3 and AD9081/AD9
 `  linux/bld9.sh`
 
 which builds a dts file for using the ad9081 on a zcu106
-
 `  linux/bldu.sh`
 
 which builds a dts file for using the DAQ3 board on a zcu106
