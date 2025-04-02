@@ -31,7 +31,8 @@ fi
 #LINUX_DIR="${1:-linux}"
 # DTFILE="$2"
 #DTFILE="arch/arm64/boot/dts/xilinx/zynqmp-zcu106-fmcdaq3.dtb"
-DTFILE="xilinx/zynqmp-zcu106-fmcdaq3.dtb"
+#DTFILE="xilinx/zynqmp-zcu106-fmcdaq3.dtb"
+DTFILE="xilinx/zynqmp-zcu106-ad9988.dtb"
 CROSS_COMPILE="$3"
 
 HOST=${HOST:-x86_64}
@@ -40,7 +41,7 @@ DEFCONFIG=${DEFCONFIG:-adi_zynqmp_defconfig}
 GCC_ARCH=aarch64-linux-gnu
 IMG_NAME="Image"
 ARCH=arm64
-DTDEFAULT=xilinx/zynqmp-zcu106-fmcdaq3.dtb
+DTDEFAULT=xilinx/zynqmp-zcu106-ad9988.dtb
 
 [ -n "$NUM_JOBS" ] || NUM_JOBS=5
 
