@@ -16,7 +16,8 @@
 
 
 /* Dan copied this from the zcu102 dts,
-   and he thinks these reg = <###> lines are right. */
+   modified it, (the reg = <###> lines)
+   and added to it (the gpio node) */
 
 &i2c1 {
 	i2c-mux@75 {
@@ -40,6 +41,19 @@
 };
 
 / {
+
+        // Dan added this.  It adds to the gpio-keys node
+	gpio-keys {
+		status = "okay";
+		button: shutdown {
+			label = "shutdown";
+			linux,code = <116>; // KEY_POWER
+			gpios = <&gpio 90 GPIO_ACTIVE_HIGH>; // SW_C=gpio_bd_i[12], 12+78=90
+			debounce-interval = <100>; // ms
+		};
+        };
+
+
 	fpga_axi: fpga-axi@0 {
 		interrupt-parent = <&gic>;
 		compatible = "simple-bus";
