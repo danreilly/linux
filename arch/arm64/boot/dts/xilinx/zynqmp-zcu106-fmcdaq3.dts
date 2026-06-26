@@ -48,11 +48,17 @@
 		button: shutdown {
 			label = "shutdown";
 			linux,code = <116>; // KEY_POWER
-			gpios = <&gpio 90 GPIO_ACTIVE_HIGH>; // SW_C=gpio_bd_i[12], 12+78=90
+			 // SW_C=gpio_bd_i[12], 12+78=90
+			gpios = <&gpio 99 GPIO_ACTIVE_HIGH>; // j87_4
 			debounce-interval = <100>; // ms
 		};
         };
 
+	gpio-poweroff {
+	    compatible = "gpio-poweroff";
+	    gpios = <&gpio 100 GPIO_ACTIVE_LOW>; // j87_5
+	    timeout-ms = <5000>;
+        };
 
 	fpga_axi: fpga-axi@0 {
 		interrupt-parent = <&gic>;
