@@ -1,6 +1,11 @@
 # fork of AD's Linux Kernel, for Quanet
 
-Dan forked this for the quanet NIC project, when porting the DAQ3 and AD9081/AD9988 EVBs to the zcu106 board.  You can use this to compile a linux Image and the device tree for the zcu106.  Note that this is all done in the 2022_R2 branch.  The files he added were:
+I forked this for the quanet NIC project, when porting the DAQ3 and AD9081/AD9988 EVBs to the zcu106 board.  Note that this is all done in the 2022_R2 branch.
+
+I had to make a .dtb file for the zcu106 board, because initially I didn't have one.  I copied the one for the 102 and modified it.  I also wanted to be able to apply overlays with symbolic references, so I compiled the .dts with -@ to add symbols.
+
+Eventually I compiled a linux Image.  Now I forget why.
+he device tree for the zcu106.  .  The files he added were:
 
 `  linux/bld9.sh`
 

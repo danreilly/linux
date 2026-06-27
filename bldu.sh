@@ -3,16 +3,18 @@ set -e
 echo This script currently builds only the .dtb file for a zcu106.
 echo "It is based on Analog Device's script described at"
 echo "https://wiki.analog.com/resources/tools-software/linux-build/generic/zynqmp"
-
-if [ -z `which vitis` ]; then
-  echo putting Vitis into the path
-  source /tools/Xilinx/Vitis/2023.2/settings64.sh
+if [[ -v XILINX_VIVADO ]]; then
+  echo "vivado already defined?"
+else
+  if [ -z `which vitis` ]; then
+    echo putting Vitis into the path
+    source /tools/Xilinx/Vitis/2023.2/settings64.sh
+  fi
+  if [ -z `which vivado` ]; then
+    echo putting Vivado into the path
+    source /tools/Xilinx/Vivado/2023.2/settings64.sh
+  fi
 fi
-if [ -z `which vivado` ]; then
-  echo putting Vivado into the path
-  source /tools/Xilinx/Vivado/2023.2/settings64.sh
-fi
-
 
 
 # Usage: build_zynq_kernel_image.sh [kernel_dir] [dt_file] [path_cross_toolchain]
@@ -97,14 +99,40 @@ export KCFLAGS
 export ARCH
 export CROSS_COMPILE
 
+export INSTALL_MOD_PATH="/home/reilly/build2/mods"
+#make kernelrelease
+#exit 0
+
+if false; then
+  echo "pose test"
+  # how to pose as a different version
+  export INSTALL_MOD_PATH
+  CONFIG_LOCALVERSION="quanet"
+  CONFIG_LOCALVERSION_AUTO="n"
+  export CONFIG_LOCALVERSION
+  export CONFIG_LOCALVERSION_AUTO
+  make kernelrelease
+fi
 
 make $DEFCONFIG
 
-make -j$NUM_JOBS $IMG_NAME UIMAGE_LOADADDR=0x8000
+# make modules
+# make drivers/input/keyboard/gpio_keys.ko
+# make fs/cifs/cifs.ko
+# make drivers/uio/uio_pdrv_genirq.ko
+# make modules_install
 
-make $DTFILE
+# make -j$NUM_JOBS $IMG_NAME UIMAGE_LOADADDR=0x8000
+
+
+# Note that at one time I added -@ to DTC_FLGAS in
+# arch/arm/boot/Makefile, but that was the wrong way to do it.
+# and I hacked arm64/boot/Makefile at one point, to have:
+#    DTC_FLAGS = $(DTC_FLAGS) -@
+# also the wrong way to do it.
+make DTC_FLAGS="-@" $DTFILE
 
 
 
-echo "created: arch/arm64/$DTFILE"
+echo "created: arch/arm64/boot/dts/$DTFILE"
 echo "copy this to your boot partition as /boot/system.dtb"

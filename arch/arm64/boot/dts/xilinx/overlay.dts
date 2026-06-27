@@ -1,0 +1,67 @@
+/* 6 on intc1 =  ps-14
+   see daq3_bd.tcl line 357:
+   ad_cpu_interrupt ps-14 mb-11 $dac_fifo_name/irq
+
+  dtc -I dts -O dtb overlay.dts
+  (or is it dtbo?)
+  
+  Loading at runtime, per cat overlay.dtb > /sys/kernel/config/device-tree/overlays.
+  Loading at the boot process with specifying the .dtbo file in /boot/bootenv.txt
+  and/or /boot/uEnv.txt. In both cases the content is (enI2C4.dtbo is stored under /boot):
+
+  modprobe uio-pdrv-genirq
+
+  what is this? do I need it? perhaps only for pci generic?
+  echo "8086 10f5" > /sys/bus/pci/drivers/uio_pci_generic/new_id
+
+*/
+
+/dts-v1/;
+/plugin/;
+/ {
+
+
+
+  fragment@0 {
+     
+	/* If the base DT was not compiled with the -@ option then the fpga_axi label will
+	 not be available to resolve the overlay node(s) to the proper location in the base DT. 
+  	 then I can try target-path */
+	 
+	 /*      target = <&fpga-axi>; */
+	 
+      target-path = "/fpga-axi@0";
+      
+      __overlay__ {
+
+      /*    interrupt-parent = <&gic>; */
+      
+      /* I thought it was required to have these here, but I got
+      an error message saying that changing their values was not allowed:
+        #address-cells = <2>; 
+	#size-cells = <2>;
+	*/
+	
+        quanet_dac: quanet_dac@84ab0000 {
+/*           target-path = "/fpga-axi@0"; */
+/*        #address-cells = <2>; 
+	#size-cells = <2>; */
+           compatible = "uio-pdrv-genirq";
+	   status = "okay";
+	   /* I guess we inheret interrupt-parent from fpga_axi */
+	   /*	   interrupt-parent = interrupt-controller@f9010000; */
+           interrupt-parent = <&gic>; 
+/*   	   reg = <0x0 0x84ab0000 0x0 0x10000>;
+   	   reg = <0x0 0x84ad0000 0x0 0x10000>; */
+	   
+           #address-cells = <2>; 
+           #size-cells = <1>;
+  	   reg = <0x0 0x84ab0000 0x10000>,
+   	         <0x0 0x84ad0000 0x10000>;
+	   
+    	   /* interrupts = <0 110 IRQ_TYPE_LEVEL_HIGH>;*/
+    	   interrupts = <0 110 4>;
+	};
+     };
+  };
+};
