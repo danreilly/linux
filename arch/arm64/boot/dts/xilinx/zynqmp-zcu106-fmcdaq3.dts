@@ -43,6 +43,9 @@
 / {
 
         // Dan added this.  It adds to the gpio-keys node
+	// If shutdown is asserted, gpio_keys driver sends
+	// KEY_POWER to various subscribers, one of which shuts
+	// linux down.
 	gpio-keys {
 		status = "okay";
 		button: shutdown {
@@ -54,9 +57,10 @@
 		};
         };
 
+	// system asserts the poweroff pin after shutdown
 	gpio-poweroff {
 	    compatible = "gpio-poweroff";
-	    gpios = <&gpio 100 GPIO_ACTIVE_LOW>; // j87_5
+	    gpios = <&gpio 100 GPIO_ACTIVE_HIGH>; // j87_5
 	    timeout-ms = <5000>;
         };
 
