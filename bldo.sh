@@ -17,4 +17,4 @@ export CROSS_COMPILE
 # make DTC_FLAGS=-@ xilinx/zynqmp-zcu106-fmcdaq3.dtb
 make $DTFILE
 echo "created: arch/arm64/boot/dts/$DTFILE"
-
+make "xilinx/chclk.dtbo"
